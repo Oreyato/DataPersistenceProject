@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MainManager : MonoBehaviour
 {
@@ -10,15 +13,27 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
 
+    public Text BestScoreText;
     public Text ScoreText;
     public GameObject GameOverText;
+    public GameObject MenuButton;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
+    private string bestPlayerName;
+    private int bestScore;
     
+    private void Awake()
+    {
+        bestPlayerName = DataHolder.Instance.BestPlayerName;
+        bestScore = DataHolder.Instance.BestScore;
+
+        BestScoreText.text = "Current best score: " + bestPlayerName + ": " + bestScore;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,7 +85,21 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (m_Points > bestScore)
+        {
+            DataHolder.Instance.BestPlayerName = DataHolder.Instance.CurrentPlayerName;
+            DataHolder.Instance.BestScore = m_Points;
+            
+            DataHolder.Instance.SavePlayerDatas();
+        }
+        
         m_GameOver = true;
         GameOverText.SetActive(true);
+        MenuButton.SetActive(true);
+    }
+
+    public void ToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

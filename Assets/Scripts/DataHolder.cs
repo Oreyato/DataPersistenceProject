@@ -6,7 +6,8 @@ public class DataHolder : MonoBehaviour
 {
     public static DataHolder Instance;
 
-    public string PlayerName;
+    public string CurrentPlayerName;
+    public string BestPlayerName;
     public int BestScore;
 
     private void Awake()
@@ -28,16 +29,20 @@ public class DataHolder : MonoBehaviour
     [System.Serializable]
     class SaveData
     {
+        public string CurrentPlayerName;
+        
         public int BestScore;
-        public string PlayerName;
+        public string BestPlayerName;
     }
     
     public void SavePlayerDatas()
     {
         SaveData data = new SaveData
         {
+            CurrentPlayerName = CurrentPlayerName,
+            
             BestScore = BestScore,
-            PlayerName = PlayerName
+            BestPlayerName = BestPlayerName
         };
 
         // Store data in json format
@@ -56,7 +61,8 @@ public class DataHolder : MonoBehaviour
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            PlayerName = data.PlayerName;
+            CurrentPlayerName = data.CurrentPlayerName;
+            BestPlayerName = data.BestPlayerName;
             BestScore = data.BestScore;
         }
     }
