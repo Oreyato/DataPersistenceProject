@@ -8,6 +8,9 @@ using UnityEditor;
 
 public class MenuUIHandler : MonoBehaviour
 {
+    
+    
+    
     public void LaunchGame()
     {
         SceneManager.LoadScene(1);
@@ -15,7 +18,7 @@ public class MenuUIHandler : MonoBehaviour
 
     public void SavePlayerName()
     {
-        
+        DataHolder.Instance.SavePlayerDatas();
     }
 
     public void Exit()
